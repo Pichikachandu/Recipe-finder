@@ -27,8 +27,8 @@ const Favorites = () => {
   }
 
   return (
-    <div className="w-full min-h-screen flex flex-col overflow-y-auto">
-      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+    <div className="w-full min-h-screen overflow-y-auto">
+      <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
           <div>
             <h1 className="text-2xl sm:text-3xl font-bold text-foreground">Your Favorites</h1>
