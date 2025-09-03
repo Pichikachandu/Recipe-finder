@@ -147,7 +147,7 @@ const RecipeDetail = () => {
   const hasDetails = recipe?.strInstructions || (recipe.ingredients && recipe.ingredients.length > 0);
 
   return (
-    <div className="w-full min-h-screen flex flex-col">
+    <div className="w-full min-h-screen flex flex-col overflow-y-auto">
       <motion.div 
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
