@@ -57,8 +57,19 @@ const RecipeDetail = () => {
   }, [recipe]);
 
   // Toggle cooking mode
-  const toggleCookingMode = () => {
+  const toggleCookingMode = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
     setCookingMode(!cookingMode);
+  };
+
+  const handleBackClick = (e) => {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      e.nativeEvent.stopImmediatePropagation();
+    }
+    navigate(-1);
   };
   
   // Handle step change from CookingMode
@@ -155,56 +166,57 @@ const RecipeDetail = () => {
         className="flex-1 w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8"
       >
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
-          <motion.div 
-            className="relative group"
-            whileHover={{ x: -2 }}
-            whileTap={{ scale: 0.98 }}
-          >
-            <button
-              onClick={() => navigate(-1)}
-              className="flex items-center px-6 py-3 rounded-xl bg-gradient-to-br from-card to-card/80 border border-border/50 text-foreground/90 hover:text-foreground hover:shadow-lg hover:shadow-primary/5 transition-all duration-300 group-hover:shadow-md group-hover:shadow-primary/10 backdrop-blur-sm"
+          <div className="relative z-50">
+            <motion.button 
+              onClick={handleBackClick}
+              whileHover={{ x: -2 }}
+              whileTap={{ scale: 0.98 }}
+              className="group flex items-center px-6 py-3 rounded-xl bg-gradient-to-br from-card to-card/80 border border-border/50 text-foreground/90 hover:text-foreground hover:shadow-lg hover:shadow-primary/5 transition-all duration-300 group-hover:shadow-md group-hover:shadow-primary/10 backdrop-blur-sm relative z-50"
+              style={{ WebkitTapHighlightColor: 'transparent' }}
             >
               <FiArrowLeft className="mr-3 transition-transform duration-300 group-hover:-translate-x-1" />
               <span className="font-medium">Back to Recipes</span>
-            </button>
-            <span className="absolute inset-0 rounded-xl bg-gradient-to-r from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10"></span>
-          </motion.div>
+              <span className="absolute inset-0 rounded-xl bg-gradient-to-r from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10"></span>
+            </motion.button>
+          </div>
           
-          <motion.div
+          <motion.button
+            onClick={toggleCookingMode}
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
-            className="w-full sm:w-auto"
+            className={`w-full sm:w-auto flex items-center justify-center px-6 py-4 sm:py-3 rounded-xl font-medium transition-all duration-300 relative overflow-visible z-10 ${
+              cookingMode 
+                ? 'bg-gradient-to-br from-red-500/10 to-red-600/10 text-red-600 hover:from-red-500/15 hover:to-red-600/15 border border-red-500/20 hover:border-red-500/30' 
+                : 'bg-gradient-to-br from-primary/10 to-primary/20 text-primary hover:from-primary/15 hover:to-primary/25 border border-primary/20 hover:border-primary/30'
+            } shadow-sm hover:shadow-md hover:shadow-primary/10 group active:scale-[0.98]`}
+            style={{
+              WebkitTapHighlightColor: 'transparent',
+              minHeight: '3.5rem', // Increased minimum height for better touch
+            }}
           >
-            <button
-              onClick={toggleCookingMode}
-              className={`w-full flex items-center justify-center px-6 py-3 rounded-xl font-medium transition-all duration-300 ${
-                cookingMode 
-                  ? 'bg-gradient-to-br from-red-500/10 to-red-600/10 text-red-600 hover:from-red-500/15 hover:to-red-600/15 border border-red-500/20 hover:border-red-500/30' 
-                  : 'bg-gradient-to-br from-primary/10 to-primary/20 text-primary hover:from-primary/15 hover:to-primary/25 border border-primary/20 hover:border-primary/30'
-              } shadow-sm hover:shadow-md hover:shadow-primary/10 group`}
-            >
-              {cookingMode ? (
-                <>
-                  <FiX className="mr-2 group-hover:scale-110 transition-transform" />
-                  <span>Exit Cooking Mode</span>
-                </>
-              ) : (
-                <>
-                  <FiPlay className="mr-2 group-hover:scale-110 transition-transform" />
-                  <span>Start Cooking Mode</span>
-                </>
-              )}
-              <span className="absolute inset-0 rounded-xl bg-gradient-to-r from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10"></span>
-            </button>
-          </motion.div>
+            {cookingMode ? (
+              <>
+                <FiX className="mr-2 group-hover:scale-110 transition-transform" />
+                <span>Exit Cooking Mode</span>
+              </>
+            ) : (
+              <>
+                <FiPlay className="mr-2 group-hover:scale-110 transition-transform" />
+                <span>Start Cooking Mode</span>
+              </>
+            )}
+            <span className="absolute inset-0 rounded-xl bg-gradient-to-r from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10"></span>
+          </motion.button>
         </div>
 
         {cookingMode ? (
-          <CookingMode 
-            instructions={instructions}
-            onExit={toggleCookingMode}
-            onStepChange={handleStepChange}
-          />
+          <div className="relative z-50" onClick={(e) => e.stopPropagation()}>
+            <CookingMode 
+              instructions={instructions}
+              onExit={toggleCookingMode}
+              onStepChange={handleStepChange}
+            />
+          </div>
         ) : (
           <div className="grid lg:grid-cols-2 gap-6 sm:gap-8">
             {/* Recipe Image */}

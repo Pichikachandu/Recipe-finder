@@ -46,15 +46,20 @@ const CookingMode = ({
     setIsTimerRunning(true);
   };
   
-  const toggleTimer = () => {
+  const toggleTimer = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
     if (timer > 0) {
-      setIsTimerRunning(!isTimerRunning);
-    } else if (instructions[currentStep]?.timer) {
-      startTimer(instructions[currentStep].timer);
+      setIsTimerRunning(prev => !prev);
+    } else {
+      startTimer(instructions[currentStep]?.timer || 0);
     }
   };
   
-  const resetTimer = () => {
+  const resetTimer = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsTimerRunning(false);
     setTimer(instructions[currentStep]?.timer || 0);
   };
   
@@ -64,7 +69,11 @@ const CookingMode = ({
     return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
   };
   
-  const toggleStepCompletion = (index) => {
+  const toggleStepCompletion = (index, e) => {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
     setCompletedSteps(prev => 
       prev.includes(index) 
         ? prev.filter(i => i !== index)
@@ -72,25 +81,27 @@ const CookingMode = ({
     );
   };
   
-  const nextStep = () => {
-    if (currentStep < instructions.length - 1) {
-      const newStep = currentStep + 1;
-      setCurrentStep(newStep);
-      setTimer(0);
-      setIsTimerRunning(false);
-      onStepChange(newStep);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+  const prevStep = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (currentStep > 0) {
+      setCurrentStep(prev => {
+        const newStep = prev - 1;
+        onStepChange(newStep);
+        return newStep;
+      });
     }
   };
-  
-  const prevStep = () => {
-    if (currentStep > 0) {
-      const newStep = currentStep - 1;
-      setCurrentStep(newStep);
-      setTimer(0);
-      setIsTimerRunning(false);
-      onStepChange(newStep);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  const nextStep = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (currentStep < instructions.length - 1) {
+      setCurrentStep(prev => {
+        const newStep = prev + 1;
+        onStepChange(newStep);
+        return newStep;
+      });
     }
   };
 
@@ -113,7 +124,7 @@ const CookingMode = ({
   }
 
   return (
-    <div className="bg-card rounded-2xl shadow-sm border border-border/30 overflow-hidden">
+    <div className="bg-card rounded-2xl shadow-sm border border-border/30 overflow-hidden relative z-10" onClick={(e) => e.stopPropagation()}>
       {/* Progress Bar */}
       <div className="h-2 bg-accent/20">
         <div 
@@ -132,7 +143,11 @@ const CookingMode = ({
               {completedSteps.includes(currentStep) ? '✓ Completed' : 'In Progress'}
             </span>
             <button
-              onClick={onExit}
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                onExit(e);
+              }}
               className="p-2 rounded-lg hover:bg-accent/20 text-muted-foreground hover:text-foreground transition-colors"
               aria-label="Exit cooking mode"
             >
@@ -191,7 +206,7 @@ const CookingMode = ({
           </button>
           
           <button
-            onClick={() => toggleStepCompletion(currentStep)}
+            onClick={(e) => toggleStepCompletion(currentStep, e)}
             className={`flex items-center px-6 py-2.5 rounded-full font-medium ${
               completedSteps.includes(currentStep)
                 ? 'bg-green-500/10 text-green-600 hover:bg-green-500/20'
