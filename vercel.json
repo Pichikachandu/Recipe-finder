@@ -15,7 +15,19 @@
       "dest": "/assets/$1"
     },
     {
-      "src": "/.*",
+      "src": "/workbox-(.*)",
+      "dest": "/workbox-$1"
+    },
+    {
+      "src": "/sw.js",
+      "dest": "/sw.js"
+    },
+    {
+      "src": "/manifest.webmanifest",
+      "dest": "/manifest.webmanifest"
+    },
+    {
+      "src": "/(.*)",
       "dest": "/index.html"
     }
   ]
