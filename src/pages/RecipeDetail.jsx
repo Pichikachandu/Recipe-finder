@@ -326,27 +326,35 @@ const RecipeDetail = () => {
 
         {/* Source */}
         {recipe.strSource && (
-          <motion.div
-            className="mt-12 text-center group"
-            whileHover={{ y: -2 }}
-            transition={{ type: 'spring', stiffness: 400, damping: 10 }}
-          >
-            <p className="text-sm text-muted-foreground mb-3">Recipe originally from:</p>
-            <a 
-              href={recipe.strSource} 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="inline-flex items-center px-6 py-3 rounded-full bg-gradient-to-r from-primary/10 to-primary/5 border border-primary/20 hover:border-primary/30 text-primary font-medium transition-all duration-300 group-hover:shadow-lg group-hover:shadow-primary/10 group-hover:bg-primary/20"
+          <div className="relative z-10">
+            <motion.div
+              className="mt-12 text-center group"
+              whileHover={{ y: -2 }}
+              transition={{ type: 'spring', stiffness: 400, damping: 10 }}
+              onClick={(e) => e.stopPropagation()}
             >
-              <span className="flex items-center">
-                View Original Recipe
-                <FiExternalLink className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </span>
-              <span className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                <span className="absolute inset-0 rounded-full border-2 border-primary/20 animate-ping-slow"></span>
-              </span>
-            </a>
-          </motion.div>
+              <p className="text-sm text-muted-foreground mb-3">Recipe originally from:</p>
+              <a 
+                href={recipe.strSource} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="relative inline-flex items-center px-6 py-3 rounded-full bg-gradient-to-r from-primary/10 to-primary/5 border border-primary/20 hover:border-primary/30 text-primary font-medium transition-all duration-300 group-hover:shadow-lg group-hover:shadow-primary/10 group-hover:bg-primary/20 overflow-visible z-10"
+                style={{ WebkitTapHighlightColor: 'transparent' }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  // Let the default link behavior happen
+                }}
+              >
+                <span className="flex items-center relative z-10">
+                  View Original Recipe
+                  <FiExternalLink className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </span>
+                <span className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <span className="absolute inset-0 rounded-full border-2 border-primary/20 animate-ping-slow"></span>
+                </span>
+              </a>
+            </motion.div>
+          </div>
         )}
       </motion.div>
     </div>
