@@ -168,7 +168,12 @@ const Home = () => {
 
   return (
     <div className="w-full">
-      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <motion.div 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.3 }}
+        className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8"
+      >
         {/* Hero Section */}
         <div className="text-center mb-12">
           <div className="flex items-center justify-center mb-4">
@@ -273,7 +278,7 @@ const Home = () => {
             error={error}
           />
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 };

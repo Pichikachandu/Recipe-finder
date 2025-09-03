@@ -31,26 +31,28 @@ function App() {
     }
   }, [darkMode]);
 
+  const toggleDarkMode = () => {
+    setDarkMode(!darkMode);
+  };
+
   return (
-    <FavoritesProvider>
-      <IngredientsProvider>
-        <div className={`min-h-screen flex flex-col bg-background text-foreground transition-colors duration-300 ${darkMode ? 'dark' : ''}`}>
-          <div className="flex-1 flex flex-col">
-            <Header darkMode={darkMode} setDarkMode={setDarkMode} />
-            <main className="flex-1 overflow-y-auto">
-              <div className="w-full">
-                <Routes>
-                  <Route path="/" element={<Home />} />
-                  <Route path="/recipe/:id" element={<RecipeDetail />} />
-                  <Route path="/favorites" element={<Favorites />} />
-                </Routes>
-              </div>
-            </main>
-            <Footer />
-          </div>
-        </div>
-      </IngredientsProvider>
-    </FavoritesProvider>
+    <div className={`min-h-screen flex flex-col ${darkMode ? 'dark' : ''} bg-background text-foreground`}>
+      <Header darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
+      <main className="flex-1 overflow-y-auto">
+        <FavoritesProvider>
+          <IngredientsProvider>
+            <div className="min-h-[calc(100vh-130px)]">
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/recipe/:id" element={<RecipeDetail />} />
+                <Route path="/favorites" element={<Favorites />} />
+              </Routes>
+            </div>
+          </IngredientsProvider>
+        </FavoritesProvider>
+      </main>
+      <Footer />
+    </div>
   );
 }
 
