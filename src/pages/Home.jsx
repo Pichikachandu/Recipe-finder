@@ -168,44 +168,51 @@ const Home = () => {
 
   return (
     <div className="w-full">
-      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 2xl:px-0">
         {/* Hero Section */}
-        <div className="text-center mb-12">
-          <div className="flex items-center justify-center mb-4">
-            <span className="text-5xl mr-3">🥗</span>
-            <h1 className="text-4xl md:text-5xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/80">
+        <div className="text-center mb-10 sm:mb-16 lg:mb-20 px-2">
+          <div className="flex items-center justify-center mb-4 sm:mb-6">
+            <span className="text-5xl sm:text-6xl lg:text-7xl mr-3 lg:mr-4">🥗</span>
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl 2xl:text-7xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/80">
               Recipe<span className="font-light text-foreground/90">Radar</span>
             </h1>
           </div>
-          <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-lg sm:text-xl lg:text-2xl text-muted-foreground max-w-3xl mx-auto px-2 leading-relaxed">
             Discover and create delicious meals with what you already have. Start by searching for an ingredient!
           </p>
         </div>
 
         {/* Search Bar */}
-        <div className={`transition-all duration-500 transform ${isSearching ? 'scale-95 opacity-90' : 'scale-100'}`}>
+        <div className={`transition-all duration-500 transform max-w-4xl mx-auto px-1 ${isSearching ? 'scale-95 opacity-90' : 'scale-100'}`}>
           <SearchBar onSearch={handleSearch} />
         </div>
         
-        {/* Ingredient Manager */}
-        <IngredientManager />
-        
-        {/* Smart Suggestions */}
-        <IngredientSuggestions />
+        <div className="mt-6 lg:mt-8">
+          <div className="bg-card/50 rounded-xl p-4 sm:p-6 border border-border/30">
+            <IngredientManager />
+          </div>
+          
+          {/* Smart Suggestions - Moved below the IngredientManager */}
+          <div className="mt-6">
+            <div className="bg-card/50 rounded-xl p-4 sm:p-6 border border-border/30">
+              <IngredientSuggestions />
+            </div>
+          </div>
+        </div>
 
         {/* Filters */}
         {!loading && recipes.length > 0 && (
-          <div className="relative">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold text-foreground flex items-center">
-                <FiFilter className="mr-2 text-primary" />
-                Filters
-                {Object.values(filters).flat().length > 0 && (
-                  <span className="ml-2 bg-primary/10 text-primary text-xs font-bold px-2 py-0.5 rounded-full">
-                    {Object.values(filters).flat().length}
-                  </span>
-                )}
-              </h2>
+          <div className="relative mt-8 sm:mt-10 lg:mt-12 px-1 max-w-6xl mx-auto">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
+                <h2 className="text-base sm:text-lg font-semibold text-foreground flex items-center">
+                  <FiFilter className="mr-2 text-primary" />
+                  Filters
+                  {Object.values(filters).flat().length > 0 && (
+                    <span className="ml-2 bg-primary/10 text-primary text-xs font-bold px-2 py-0.5 rounded-full">
+                      {Object.values(filters).flat().length}
+                    </span>
+                  )}
+                </h2>
               
               {ingredients.length > 0 && (
                 <button
@@ -213,20 +220,20 @@ const Home = () => {
                     ...prev,
                     useMyIngredients: !prev.useMyIngredients
                   }))}
-                  className={`flex items-center text-sm px-4 py-2 rounded-full transition-colors ${
+                  className={`flex items-center text-sm sm:text-base px-5 py-2.5 sm:px-6 sm:py-3 rounded-full transition-colors ${
                     filters.useMyIngredients
                       ? 'bg-green-500/10 text-green-600 hover:bg-green-500/20'
                       : 'bg-accent/30 hover:bg-accent/40 text-foreground/80'
                   }`}
                 >
-                  <div className={`w-5 h-5 rounded-full flex items-center justify-center mr-2 ${
+                  <div className={`w-5 h-5 sm:w-6 sm:h-6 rounded-full flex items-center justify-center mr-2 sm:mr-3 ${
                     filters.useMyIngredients ? 'bg-green-500 text-white' : 'border-2 border-foreground/30'
                   }`}>
-                    {filters.useMyIngredients && <FiCheck size={14} />}
+                    {filters.useMyIngredients && <FiCheck size={16} className="sm:scale-110" />}
                   </div>
-                  Use my ingredients
+                  <span className="font-medium">Use my ingredients</span>
                   {filters.useMyIngredients && (
-                    <span className="ml-2 bg-green-500/20 text-green-600 text-xs font-bold px-2 py-0.5 rounded-full">
+                    <span className="ml-2 sm:ml-3 bg-green-500/20 text-green-600 text-xs sm:text-sm font-bold px-2.5 py-1 rounded-full">
                       {ingredients.length} {ingredients.length === 1 ? 'ingredient' : 'ingredients'}
                     </span>
                   )}
@@ -243,15 +250,17 @@ const Home = () => {
 
         {/* Results Count */}
         {!loading && recipes.length > 0 && (
-          <div className="mb-6 text-sm text-foreground/70 flex items-center justify-between">
+          <div className="mb-6 sm:mb-8 text-sm sm:text-base text-foreground/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3 px-1 max-w-6xl mx-auto">
             <div className="flex items-center">
-              <FiClock className="mr-1.5" />
-              <span>
-                Showing {filteredRecipes.length} of {recipes.length} {recipes.length === 1 ? 'recipe' : 'recipes'}
-                {filters.maxTime && ` (≤ ${filters.maxTime} min)`}
+              <FiClock className="mr-2 sm:mr-3 w-4 h-4 sm:w-5 sm:h-5" />
+              <span className="font-medium">
+                Showing <span className="text-foreground font-semibold">{filteredRecipes.length}</span> of {recipes.length} {recipes.length === 1 ? 'recipe' : 'recipes'}
+                {filters.maxTime && (
+                  <span className="text-foreground/70"> (≤ {filters.maxTime} min)</span>
+                )}
                 {filters.useMyIngredients && ingredients.length > 0 && (
-                  <span className="ml-2 text-green-500">
-                    • Sorted by ingredient match
+                  <span className="ml-2 sm:ml-3 text-green-500 bg-green-50 dark:bg-green-900/20 px-2.5 py-1 rounded-full text-sm">
+                    Sorted by ingredient match
                   </span>
                 )}
               </span>
@@ -266,12 +275,14 @@ const Home = () => {
         )}
 
         {/* Recipe Grid */}
-        <div className={`transition-opacity duration-300 ${loading ? 'opacity-50' : 'opacity-100'}`}>
-          <RecipeGrid 
-            recipes={filteredRecipes} 
-            loading={loading} 
-            error={error}
-          />
+        <div className={`transition-opacity duration-300 mt-4 sm:mt-6 ${loading ? 'opacity-50' : 'opacity-100'}`}>
+          <div className="max-w-7xl mx-auto">
+            <RecipeGrid 
+              recipes={filteredRecipes} 
+              loading={loading} 
+              error={error}
+            />
+          </div>
         </div>
       </div>
     </div>
