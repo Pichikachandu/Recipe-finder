@@ -163,27 +163,6 @@ Found a bug or have a feature request? [Open an issue](https://github.com/yourus
 - Clear error messages
 - Input sanitization
 
-## 📋 Submission Requirements
-
-### Level 1 (50%) - AI Collaboration
-- [ ] Share ChatGPT conversation link
-- [ ] Document problem-solving approach
-- [ ] Include all prompts used
-- [ ] Show iterations and improvements
-
-### Level 2 (30%) - Working Application
-- [ ] Deploy on Vercel/Netlify
-- [ ] Test all core features
-- [ ] Ensure mobile responsiveness
-- [ ] Verify all links work
-
-### Level 3 (20%) - Code Quality
-- [ ] Clean, well-commented code
-- [ ] Proper folder structure
-- [ ] Comprehensive README
-- [ ] Setup instructions
-- [ ] Environment variables documentation
-
 ## 📝 License
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
